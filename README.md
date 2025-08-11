@@ -2,6 +2,21 @@
 
 A voice-enabled request system for hotel guests, built with FastAPI, Supabase, and React.
 
+## Dependencies
+
+### Backend Dependencies
+- **Python 3.9+** - Core programming language
+- **FastAPI 0.95.2** - Modern web framework for building APIs
+- **Uvicorn 0.22.0** - ASGI server for running FastAPI applications
+- **Pydantic 1.10.7** - Data validation and settings management
+- **python-dotenv 1.0.0** - Loads environment variables from .env files
+
+For complete list with versions, see [requirements.txt](./backend/requirements.txt)
+
+### Frontend Dependencies (Coming Soon)
+- React
+- Node.js 16+
+
 ## Project Structure
 
 ```
@@ -34,19 +49,42 @@ butleriq_mvp/
 
 ### Installation
 
-1. Clone the repository
-2. Set up the backend:
+1. **Clone the repository**
    ```bash
+   git clone https://github.com/yourusername/butleriq_mvp.git
+   cd butleriq_mvp
+   ```
+
+2. **Set up the backend**
+   ```bash
+   # Navigate to backend directory
    cd backend
+   
+   # Create and activate virtual environment
    python -m venv venv
    source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   
+   # Install Python dependencies
    pip install -r requirements.txt
    ```
-3. Set up environment variables:
+
+3. **Set up environment variables**
    ```bash
+   # Copy the example environment file
    cp .env.example .env
-   # Edit .env with your Supabase credentials
+   
+   # Edit the .env file with your Supabase credentials
    ```
+
+4. **Run the development server**
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   The API will be available at http://localhost:8000
+
+5. **API Documentation**
+   - Interactive API docs: http://localhost:8000/docs
+   - Alternative API docs: http://localhost:8000/redoc
 
 ## Development
 

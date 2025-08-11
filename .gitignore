@@ -18,6 +18,32 @@ var/
 wheels/
 *.egg-info/
 .installed.cfg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Local development
+.DS_Store
+
+# Frontend (when added)
+node_modules/
+
+# Local development
+*.local
 *.egg
 MANIFEST
 .pytest_cache/
