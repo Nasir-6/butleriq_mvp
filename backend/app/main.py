@@ -3,8 +3,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import logging
-import json  # Added json import
 import uvicorn
+import requests
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get HA_WEBHOOK_URL from environment variables
+HA_WEBHOOK_URL = os.getenv("HA_WEBHOOK_URL")
+if not HA_WEBHOOK_URL:
+    raise ValueError("HA_WEBHOOK_URL environment variable is not set")
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -37,6 +47,17 @@ class VoiceResponse(BaseModel):
     message: str
     intent: str
 
+
+def send_reply_to_ha(json):
+    try:
+        r = requests.post(HA_WEBHOOK_URL, json=json, verify=False)
+        print(f"Status code: {r.status_code}")
+        print(f"Response body: {r.text}")
+    except Exception as e:
+        print("Error:", e)
+
+
+
 # Routes
 @app.get("/")
 async def root():
@@ -47,6 +68,7 @@ async def root():
             "GET /health": "Check API status"
         }
     }
+
 
 @app.post("/voice-command", response_model=VoiceResponse)
 async def handle_voice_command(command: VoiceCommand):
@@ -79,6 +101,8 @@ async def handle_voice_command(command: VoiceCommand):
             }
         
         logger.info(f"Response: {response}")
+        send_reply_to_ha(response)
+        
         return response
         
     except Exception as e:
