@@ -1,7 +1,7 @@
 import spacy
 from spacy.training.example import Example
 
-from .train_data import train_data
+from train_data import train_data
 
 # Create blank English pipeline
 nlp = spacy.blank("en")
