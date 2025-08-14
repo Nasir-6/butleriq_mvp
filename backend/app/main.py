@@ -1,24 +1,19 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 import uvicorn
-import requests
 from dotenv import load_dotenv
 import os
-
-from app.models.voice_models import VoiceCommand, VoiceResponse
 
 # Load environment variables from .env file
 load_dotenv()
 
-# Get HA_WEBHOOK_URL from environment variables
-HA_WEBHOOK_URL = os.getenv("HA_WEBHOOK_URL")
-if not HA_WEBHOOK_URL:
-    raise ValueError("HA_WEBHOOK_URL environment variable is not set")
-
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Import routers
+from app.routes.voice_routes import router as voice_router
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -36,72 +31,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def send_reply_to_ha(json):
-    try:
-        r = requests.post(HA_WEBHOOK_URL, json=json, verify=False)
-        print(f"Status code: {r.status_code}")
-        print(f"Response body: {r.text}")
-    except Exception as e:
-        print("Error:", e)
+# Include routers
+app.include_router(voice_router)
 
+@app.get("/health")
+async def health_check():
+    """Health check endpoint."""
+    return {
+        "status": "healthy",
+        "version": "0.1.0"
+    }
 
-
-# Routes
 @app.get("/")
 async def root():
+    """Root endpoint with API information."""
     return {
         "message": "ButlerIQ Voice API is running",
+        "documentation": "/docs",
         "endpoints": {
-            "POST /voice-command": "Process voice commands",
+            "POST /api/v1/voice-command": "Process voice commands",
             "GET /health": "Check API status"
         }
     }
 
-
-@app.post("/voice-command", response_model=VoiceResponse)
-async def handle_voice_command(command: VoiceCommand):
-    """
-    Handle voice commands from Home Assistant.
-    """
-    try:
-        logger.info(f"Received command from room {command.room_number}: {command.text}")
-        
-        # Simple intent detection
-        text = command.text.lower()
-        
-        if any(word in text for word in ["clean", "towel", "housekeeping"]):
-            response = {
-                "status": "success",
-                "message": "Housekeeping has been notified and will assist you shortly.",
-                "intent": "housekeeping_request"
-            }
-        elif any(word in text for word in ["light", "electric", "maintenance"]):
-            response = {
-                "status": "success",
-                "message": "Maintenance has been notified about the issue.",
-                "intent": "maintenance_request"
-            }
-        else:
-            response = {
-                "status": "success",
-                "message": "Your request has been received by our staff.",
-                "intent": "general_request"
-            }
-        
-        logger.info(f"Response: {response}")
-        send_reply_to_ha(response)
-        
-        return response
-        
-    except Exception as e:
-        logger.error(f"Error processing command: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-     
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy"}
-
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
