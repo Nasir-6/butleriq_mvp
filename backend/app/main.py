@@ -109,47 +109,6 @@ async def handle_voice_command(command: VoiceCommand):
         logger.error(f"Error processing command: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# @app.post("/voice-command")
-# async def handle_voice_command(request: Request):
-#     """
-#     Debug endpoint to log raw request data
-#     """
-#     try:
-#         # Log request details
-#         print("\n=== REQUEST DETAILS ===")
-#         print(f"Method: {request.method}")
-#         print(f"Headers: {dict(request.headers)}")
-#         print(f"Client: {request.client}")
-        
-#         # Try to get JSON body
-#         try:
-#             body = await request.json()
-#             print("\n=== JSON BODY ===")
-#             print(body)
-#         except Exception as e:
-#             print(f"\nCould not parse JSON: {e}")
-#             body = await request.body()
-#             print("\n=== RAW BODY ===")
-#             print(body.decode())
-        
-#         # Try to get form data
-#         try:
-#             form_data = await request.form()
-#             print("\n=== FORM DATA ===")
-#             print(dict(form_data))
-#         except Exception:
-#             pass
-            
-#         return {
-#             "status": "debug",
-#             "message": "Check server logs for request details"
-#         }
-        
-#     except Exception as e:
-#         print(f"\n=== ERROR ===")
-#         print(str(e))
-#         return {"error": str(e)}   
-
      
 @app.get("/health")
 async def health_check():
