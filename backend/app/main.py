@@ -1,12 +1,12 @@
-from fastapi import FastAPI, HTTPException, Request  # Added Request here
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Optional
 import logging
 import uvicorn
 import requests
 from dotenv import load_dotenv
 import os
+
+from app.models.voice_models import VoiceCommand, VoiceResponse
 
 # Load environment variables from .env file
 load_dotenv()
@@ -35,18 +35,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Models
-class VoiceCommand(BaseModel):
-    text: str
-    room_number: str
-    device_id: Optional[str] = None
-
-class VoiceResponse(BaseModel):
-    status: str
-    message: str
-    intent: str
-
 
 def send_reply_to_ha(json):
     try:
