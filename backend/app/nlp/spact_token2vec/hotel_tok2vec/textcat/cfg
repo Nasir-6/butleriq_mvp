@@ -1,0 +1,11 @@
+{
+  "labels":[
+    "Front Desk",
+    "Housekeeping",
+    "Room Service",
+    "Maintenance",
+    "Concierge"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}

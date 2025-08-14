@@ -19,10 +19,10 @@ class VoiceResponse(BaseModel):
     Model representing the response to a voice command.
     
     Attributes:
-        status: Status of the operation (e.g., 'success', 'error')
-        message: Response message to be sent back to the client
-        intent: Detected intent of the voice command
+        text: The response message to be spoken
+        department: The predicted department
+        confidence: Confidence score of the prediction (0.0 to 1.0)
     """
-    status: str
-    message: str
-    intent: str
+    text: str
+    department: str
+    confidence: float
