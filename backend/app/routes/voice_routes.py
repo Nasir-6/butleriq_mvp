@@ -32,6 +32,10 @@ DEPARTMENT_RESPONSES = {
     "Concierge": {
         "message": "Concierge has received your request.",
         "intent": "concierge_request"
+    },
+    "General Help": {
+        "message": "Your request has been received and will be handled by our staff shortly.",
+        "intent": "general_request"
     }
 }
 
@@ -55,19 +59,18 @@ async def handle_voice_command(command: VoiceCommand):
         # Predict the department using the NLPService with fallback to 'General Help'
         predicted_department = nlp_service.predict_department(command.text) or "General Help"
         
-        # Get response details
-        response_details = DEPARTMENT_RESPONSES.get(
-            predicted_department,
-            {"message": f"Your request has been forwarded to {predicted_department}", "intent": "general_request"}
-        )
+        # Get response details, defaulting to General Help if department not found
+        response_details = DEPARTMENT_RESPONSES.get(predicted_department)
         
-        # Call Home Assistant service - COMMENT IF USING POSTMAN
-        # if "intent" in response_details:
-        #     home_assistant_service.trigger_intent(
-        #         intent=response_details["intent"],
-        #         text=command.text,
-        #         department=predicted_department
-        #     )
+        # Send webhook to Home Assistant
+        webhook_data = {
+            "intent": response_details["intent"],
+            "text": command.text,
+            "department": predicted_department,
+            "room_number": command.room_number,
+            "message": response_details["message"]
+        }
+        home_assistant_service.respond_via_webhook(webhook_data)
         
         return VoiceResponse(
             text=response_details["message"],
