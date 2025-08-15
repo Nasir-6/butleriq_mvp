@@ -5,11 +5,14 @@ train_data = [
     ("I lost my room key", {"cats": {"Front Desk": 1.0, "Housekeeping": 0.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
     ("Can I check in early?", {"cats": {"Front Desk": 1.0, "Housekeeping": 0.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
     ("I need a copy of my invoice", {"cats": {"Front Desk": 1.0, "Housekeeping": 0.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
+    ("Can I check out now?", {"cats": {"Front Desk": 1.0, "Housekeeping": 0.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
 
     # Housekeeping
     ("Please send more towels", {"cats": {"Front Desk": 0.0, "Housekeeping": 1.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
     ("I need two extra pillows", {"cats": {"Front Desk": 0.0, "Housekeeping": 1.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
     ("Could you clean my room now?", {"cats": {"Front Desk": 0.0, "Housekeeping": 1.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
+    ("Please get me some towels", {"cats": {"Front Desk": 0.0, "Housekeeping": 1.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
+    ("Get me some towels", {"cats": {"Front Desk": 0.0, "Housekeeping": 1.0, "Room Service": 0.0, "Maintenance": 0.0, "Concierge": 0.0}}),
 
     # Room Service
     ("I'd like to order breakfast", {"cats": {"Front Desk": 0.0, "Housekeeping": 0.0, "Room Service": 1.0, "Maintenance": 0.0, "Concierge": 0.0}}),
